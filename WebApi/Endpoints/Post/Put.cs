@@ -1,13 +1,15 @@
 ﻿using Application.Posts.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using WebApi.DTOs;
 
 namespace WebApi.Endpoints.Post
 {
     public partial class PostEndpoints
     {
-        public static async Task<IResult> Put(int id, string comment, IMediator mediator)
+        public static async Task<IResult> Put([FromBody]PostDTO post, int id, IMediator mediator)
         {
-            var command = new Update { PostId = id, PostContent = comment };
+            var command = new Update { PostId = id, PostContent = post.Content };
             var result = await mediator.Send(command);
             if (result == null)
             {

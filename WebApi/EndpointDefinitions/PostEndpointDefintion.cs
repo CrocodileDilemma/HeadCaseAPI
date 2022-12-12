@@ -1,5 +1,6 @@
 ﻿using WebApi.Abstractions;
 using WebApi.Endpoints.Post;
+using WebApi.Filters;
 
 namespace WebApi.EndpointDefinitions
 {
@@ -10,9 +11,16 @@ namespace WebApi.EndpointDefinitions
             var group = app.MapGroup("/api/posts");
 
             group.MapGet("/", PostEndpoints.Get);
-            group.MapGet("/{id}", PostEndpoints.GetById).WithName("GetPostById");
-            group.MapPost("/", PostEndpoints.Post);
-            group.MapPut("/{id}", PostEndpoints.Put);
+            
+            group.MapGet("/{id}", PostEndpoints.GetById)
+                .WithName("GetPostById");
+            
+            group.MapPost("/", PostEndpoints.Post)
+                .AddEndpointFilter<PostValidationFilter>();
+            
+            group.MapPut("/{id}", PostEndpoints.Put)
+                .AddEndpointFilter<PostValidationFilter>();
+            
             group.MapDelete("/{id}", PostEndpoints.Delete);
         }
     }

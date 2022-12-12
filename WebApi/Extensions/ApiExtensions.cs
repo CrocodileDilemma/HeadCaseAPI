@@ -5,6 +5,8 @@ using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Abstractions;
+using WebApi.MIddleware;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApi.Extensions
 {
@@ -37,6 +39,11 @@ namespace WebApi.Extensions
             {
                 def.RegisterEndpoints(app);
             }
+        }
+
+        public static void RegisterMiddleware(this WebApplication app)
+        {
+            app.Use(ExceptionMiddleware.HandlExceptions);
         }
     }
 }
